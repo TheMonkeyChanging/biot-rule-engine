@@ -1,20 +1,29 @@
 package org.biot.rule.engine.infrastructure.repository.rule;
 
+import com.alibaba.fastjson.JSON;
 import lombok.NonNull;
 import org.biot.rule.engine.domain.rule.RuleId;
-import org.biot.rule.engine.domain.rule.condition.point.TriggerPoint;
-import org.biot.rule.engine.domain.rule.condition.point.TriggerPointRepository;
+import org.biot.rule.engine.domain.rule.model.condition.point.TriggerPoint;
+import org.biot.rule.engine.domain.rule.model.condition.point.TriggerPointRepository;
 import org.biot.rule.engine.infrastructure.tsdb.RuleEngineTsdbClient;
 import org.biot.rule.engine.infrastructure.tsdb.TsdbClientFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * 触发点资源库实现
+ */
 @Repository
 public class TriggerPointRepositoryImpl implements TriggerPointRepository {
     @Autowired
     private TsdbClientFactory tsdbClientFactory;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 保存出发点
@@ -54,7 +63,13 @@ public class TriggerPointRepositoryImpl implements TriggerPointRepository {
      */
     @Override
     public boolean isLastTriggered(String ruleId, String sourceId) {
-        return false;
+        String key = ruleId + "#" + sourceId;
+        String value = redisTemplate.opsForValue().get(key);
+        if (value != null) {
+            return JSON.parseObject(value, Boolean.class);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -63,9 +78,11 @@ public class TriggerPointRepositoryImpl implements TriggerPointRepository {
      * @param ruleId
      * @param sourceId
      * @param triggered
+     * @param expireSeconds
      */
     @Override
-    public void markTriggeredState(String ruleId, String sourceId, boolean triggered) {
-
+    public void markTriggeredState(String ruleId, String sourceId, boolean triggered, int expireSeconds) {
+        String key = ruleId + "#" + sourceId;
+        redisTemplate.opsForValue().set(key, String.valueOf(triggered), expireSeconds, TimeUnit.SECONDS);
     }
 }

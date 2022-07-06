@@ -1,4 +1,4 @@
-package org.biot.rule.engine.domain.rule.condition.point;
+package org.biot.rule.engine.domain.rule.model.condition.point;
 
 import lombok.NonNull;
 import org.biot.rule.engine.domain.rule.RuleId;
@@ -43,6 +43,7 @@ public interface TriggerPointRepository {
      * @param ruleId
      * @param sourceId
      * @param triggered
+     * @param expireSeconds
      */
-    void markTriggeredState(String ruleId, String sourceId, boolean triggered);
+    void markTriggeredState(String ruleId, String sourceId, boolean triggered, int expireSeconds);
 }

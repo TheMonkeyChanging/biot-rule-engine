@@ -16,10 +16,10 @@ public class TriggerPointDo {
     private String sourceId;
 
     @Column(timestamp = true)
-    private Instant eventTime;
+    private Instant time;
 
     @Column
-    private boolean triggered;
+    private Boolean triggered;
 
     @Column
     private String desc;

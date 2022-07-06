@@ -4,9 +4,9 @@ import org.biot.message.BiotMessageType;
 import org.biot.rule.engine.domain.rule.matcher.RuleMatcher;
 import org.biot.rule.engine.domain.rule.matcher.RuleMatcherFactory;
 import org.biot.rule.engine.domain.rule.model.RuleModel;
-import org.biot.rule.engine.domain.rule.trigger.ReportedPropertyValue;
-import org.biot.rule.engine.domain.rule.trigger.Trigger;
-import org.biot.rule.engine.domain.rule.trigger.TriggerSourceIdentify;
+import org.biot.rule.engine.domain.rule.model.trigger.ReportedPropertyValue;
+import org.biot.rule.engine.domain.rule.model.trigger.Trigger;
+import org.biot.rule.engine.domain.rule.model.trigger.TriggerCategoryIdentify;
 import org.biot.things.core.dto.msg.PropertiesUpdateDto;
 import org.biot.things.core.message.ThingsCoreMessage;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Map;
 import java.util.Set;
 
-import static org.biot.rule.engine.domain.rule.trigger.TriggerSourceType.DEVICE_PROPERTY;
+import static org.biot.rule.engine.domain.rule.model.trigger.TriggerCategory.DEVICE_PROPERTY;
 
 /**
  * 规则引擎执行服务，处理设备相关消息
@@ -54,7 +54,7 @@ public class RuleExecuteService {
         // 多个规则、多个属性值，遍历执行
         for (RuleModel model : ruleModelSet) {
             for (Map.Entry<String, Object> entry : updateDto.getValues().entrySet()) {
-                TriggerSourceIdentify<String> sourceIdentify = new TriggerSourceIdentify(DEVICE_PROPERTY, entry.getKey());
+                TriggerCategoryIdentify<String> sourceIdentify = new TriggerCategoryIdentify(DEVICE_PROPERTY, entry.getKey());
                 // 仅当匹配规则所指定的属性时，执行相关操作流程
                 if (model.isMatch(sourceIdentify)) {
                     ReportedPropertyValue pv = convert(updateDto, entry);
@@ -72,13 +72,15 @@ public class RuleExecuteService {
             if (model.hasCondition()) {
                 // 执行条件检查通过，执行action
                 if (judge.checkCondition(model, pv)) {
-                    // do action
+                    // todo do action
+                    System.out.println("============= do action ==============");
                 } else {
                     log.info("Triggered but not passed: rule({}), source({}), property({})",
                             model.getRuleId().getUuid(), pv.getDeviceId(), pv.getPropertyId());
                 }
             } else {
-                // do action
+                // todo do action
+                System.out.println("============= do action ==============");
             }
         } else {
             if (model.hasContinuousCondition()) {

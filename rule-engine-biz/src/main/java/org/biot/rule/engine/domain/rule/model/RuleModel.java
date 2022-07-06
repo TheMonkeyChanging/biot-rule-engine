@@ -2,10 +2,10 @@ package org.biot.rule.engine.domain.rule.model;
 
 import lombok.*;
 import org.biot.rule.engine.domain.rule.RuleId;
-import org.biot.rule.engine.domain.rule.action.Action;
-import org.biot.rule.engine.domain.rule.condition.Condition;
-import org.biot.rule.engine.domain.rule.trigger.Trigger;
-import org.biot.rule.engine.domain.rule.trigger.TriggerSourceIdentify;
+import org.biot.rule.engine.domain.rule.model.action.Action;
+import org.biot.rule.engine.domain.rule.model.condition.Condition;
+import org.biot.rule.engine.domain.rule.model.trigger.Trigger;
+import org.biot.rule.engine.domain.rule.model.trigger.TriggerCategoryIdentify;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
@@ -54,7 +54,7 @@ public class RuleModel {
      * @param identify
      * @return
      */
-    public boolean isMatch(TriggerSourceIdentify identify) {
+    public boolean isMatch(TriggerCategoryIdentify identify) {
         return trigger.isMatch(identify);
     }
 

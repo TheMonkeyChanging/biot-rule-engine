@@ -4,7 +4,7 @@ import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApiBlocking;
 import com.influxdb.client.domain.WritePrecision;
-import org.biot.rule.engine.domain.rule.condition.point.TriggerPoint;
+import org.biot.rule.engine.domain.rule.model.condition.point.TriggerPoint;
 import org.biot.rule.engine.infrastructure.tsdb.RuleEngineTsdbClient;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +15,9 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class InfluxClient implements RuleEngineTsdbClient {
-    private static final char[] token = "GvWxmeCG1ymm8hNUtdosAgsefwfFnIT0xNOwSN_4-QOCIxsBzmE_aYmD3iSKIVLsQp5OM6A_tfttOxqS2vG8yg==".toCharArray();
+    private static final char[] token = "z3FqNDURFghid_xOirU2WR0qWZhr1Dn2eXtDuJTkgI07n_OD1KCHHOTsmhk1llcIp-mP82Lvs416jSQDYmv65Q==".toCharArray();
     private static final String org = "abama";
     private static final String bucket = "rule_trigger_trace";
-
-    /**
-     * 东八区与SYSTEM UTC相差的毫秒数
-     */
-    private static final long MILLS_OFFSET_E8 = TimeUnit.HOURS.toMillis(8);
 
     // 内部有连接池机制
     private final InfluxDBClient influxDBClient = InfluxDBClientFactory.create("http://localhost:8086", token, org, bucket);
@@ -63,13 +58,14 @@ public class InfluxClient implements RuleEngineTsdbClient {
      * @return
      */
     private String buildFlux(String ruleId, String sourceId, long fromTime, long endTime) {
-        String start = Instant.ofEpochMilli(fromTime).plusMillis(MILLS_OFFSET_E8).toString();
-        String stop = Instant.ofEpochMilli(endTime).plusMillis(MILLS_OFFSET_E8).toString();
+        String start = Instant.ofEpochMilli(fromTime).toString();
+        String stop = Instant.ofEpochMilli(endTime).toString();
 
         String flux = "from(bucket: \"" + bucket + "\")\n"
                 + " |> range(start: " + start + ", stop: " + stop + ")\n"
                 + " |> filter(fn: (r) => r._measurement ==\"" + ruleId + "\")\n"
-                + " |>  filter(fn: (r) => r[\"sourceId\"] ==\"" + sourceId + "\")";
+                + " |> filter(fn: (r) => r[\"sourceId\"] ==\"" + sourceId + "\")"
+                + " |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")";
         return flux;
     }
 }

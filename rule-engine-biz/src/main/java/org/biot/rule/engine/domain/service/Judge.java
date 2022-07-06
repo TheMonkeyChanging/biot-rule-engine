@@ -1,13 +1,13 @@
 package org.biot.rule.engine.domain.service;
 
 import org.biot.rule.engine.domain.rule.RuleId;
-import org.biot.rule.engine.domain.rule.condition.Condition;
-import org.biot.rule.engine.domain.rule.condition.ContinuousCondition;
-import org.biot.rule.engine.domain.rule.condition.CumulativeCondition;
-import org.biot.rule.engine.domain.rule.condition.point.TriggerPoint;
-import org.biot.rule.engine.domain.rule.condition.point.TriggerPointRepository;
+import org.biot.rule.engine.domain.rule.model.condition.Condition;
+import org.biot.rule.engine.domain.rule.model.condition.ContinuousCondition;
+import org.biot.rule.engine.domain.rule.model.condition.CumulativeCondition;
+import org.biot.rule.engine.domain.rule.model.condition.point.TriggerPoint;
+import org.biot.rule.engine.domain.rule.model.condition.point.TriggerPointRepository;
 import org.biot.rule.engine.domain.rule.model.RuleModel;
-import org.biot.rule.engine.domain.rule.trigger.ReportedPropertyValue;
+import org.biot.rule.engine.domain.rule.model.trigger.ReportedPropertyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,7 +52,8 @@ class Judge {
             TriggerPoint point = build(model.getRuleId(), pv, false);
             pointRepository.save(point);
         }
-        pointRepository.markTriggeredState(ruleId, deviceId, false);
+        Condition condition = model.getCondition();
+        pointRepository.markTriggeredState(ruleId, deviceId, false, condition.getPeriod());
     }
 
     /**
@@ -72,7 +73,8 @@ class Judge {
         pointRepository.save(point);
         long endTime = pv.getEventTime();
         long fromTime = endTime - condition.getPeriod() * TimeUnit.SECONDS.toMillis(1);
-        List<TriggerPoint> list = pointRepository.query(ruleId, pv.getDeviceId(), fromTime, endTime);
+        // endTime加1毫秒，处理边界的问题
+        List<TriggerPoint> list = pointRepository.query(ruleId, pv.getDeviceId(), fromTime, endTime + 1);
         return list.size() >= condition.getTimes();
     }
 

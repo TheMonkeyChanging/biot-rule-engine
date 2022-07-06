@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.biot.rule.engine.infrastructure.dal.mapper.rule.RuleModelMapper" >
+    <resultMap id="TriggerResultMap" type="org.biot.rule.engine.infrastructure.dal.model.rule.RuleTriggerDo">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="tenant_id" property="tenantId" jdbcType="VARCHAR" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="rule_id" property="ruleId" jdbcType="VARCHAR" />
+        <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
+        <result column="source" property="source" jdbcType="VARCHAR" />
+        <result column="trigger_rule" property="triggerRule" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="ConditionResultMap" type="org.biot.rule.engine.infrastructure.dal.model.rule.ConditionDo">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="tenant_id" property="tenantId" jdbcType="VARCHAR" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="rule_id" property="ruleId" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="period" property="period" jdbcType="INTEGER" />
+        <result column="condition_rule" property="conditionRule" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Trigger_Column_List" >
+        id, tenant_id, uuid, rule_id, source_type, source, trigger_rule, gmt_create, gmt_modified
+    </sql>
+
+    <sql id="Condition_Column_List" >
+        id, tenant_id, uuid, rule_id, type, period, condition_rule, gmt_create, gmt_modified
+    </sql>
+
+    <select id="selectTriggerByRuleId" resultMap="TriggerResultMap">
+        select
+        <include refid="Trigger_Column_List" />
+        from rule_trigger
+        where rule_id = #{ruleId,jdbcType=VARCHAR} limit 0,1
+    </select>
+
+    <select id="selectTriggersOfTenant" resultMap="TriggerResultMap">
+        select
+        <include refid="Trigger_Column_List" />
+        from rule_trigger
+        where tenant_id = #{tenantId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectConditionByRuleId" resultMap="ConditionResultMap">
+        select
+        <include refid="Condition_Column_List" />
+        from rule_condition
+        where rule_id = #{ruleId,jdbcType=VARCHAR} limit 0,1
+    </select>
+
+    <select id="selectConditionsOfTenant" resultMap="ConditionResultMap">
+        select
+        <include refid="Condition_Column_List" />
+        from rule_condition
+        where tenant_id = #{tenantId,jdbcType=VARCHAR}
+    </select>
+</mapper>

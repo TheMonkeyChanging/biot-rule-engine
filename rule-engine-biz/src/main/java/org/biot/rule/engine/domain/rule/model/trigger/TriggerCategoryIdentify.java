@@ -1,15 +1,15 @@
-package org.biot.rule.engine.domain.rule.trigger;
+package org.biot.rule.engine.domain.rule.model.trigger;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TriggerSourceIdentify<T> {
+public class TriggerCategoryIdentify<T> {
     /**
      * 触发源类型
      */
-    private TriggerSourceType type;
+    private TriggerCategory type;
 
     /**
      * 触发源标识

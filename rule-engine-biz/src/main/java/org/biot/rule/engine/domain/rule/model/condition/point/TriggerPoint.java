@@ -1,4 +1,4 @@
-package org.biot.rule.engine.domain.rule.condition.point;
+package org.biot.rule.engine.domain.rule.model.condition.point;
 
 import lombok.Builder;
 import lombok.Getter;

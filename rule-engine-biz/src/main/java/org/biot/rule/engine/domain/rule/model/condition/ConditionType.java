@@ -1,4 +1,4 @@
-package org.biot.rule.engine.domain.rule.condition;
+package org.biot.rule.engine.domain.rule.model.condition;
 
 /**
  * 执行条件的类别

@@ -1,20 +1,22 @@
-package org.biot.rule.engine.domain.rule.trigger;
+package org.biot.rule.engine.domain.rule.model.trigger;
 
 import com.googlecode.aviator.AviatorEvaluator;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.biot.rule.engine.domain.rule.trigger.TriggerSourceType.DEVICE_PROPERTY;
+import static org.biot.rule.engine.domain.rule.model.trigger.TriggerCategory.DEVICE_PROPERTY;
 
 /**
  * 属性值上报触发器，通常为属性值与特定值的比较关系
  */
 @Getter
 @Setter
+@SuperBuilder
 public class PropertyValueTrigger extends DeviceTrigger<ReportedPropertyValue> {
     /**
      * 属性标识
@@ -34,7 +36,7 @@ public class PropertyValueTrigger extends DeviceTrigger<ReportedPropertyValue> {
     @Override
     public boolean isTriggered(@NonNull ReportedPropertyValue value) {
         if (propertyId.equals(value.getPropertyId())) {
-            Map map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put(propertyId, value.getPropertyValue());
             return (Boolean) AviatorEvaluator.execute(expression, map);
         }
@@ -49,7 +51,7 @@ public class PropertyValueTrigger extends DeviceTrigger<ReportedPropertyValue> {
      * @return
      */
     @Override
-    public boolean isMatch(@NonNull TriggerSourceIdentify identify) {
-        return DEVICE_PROPERTY==identify.getType() ? propertyId.equals(identify.getIdentify()) : false;
+    public boolean isMatch(@NonNull TriggerCategoryIdentify identify) {
+        return DEVICE_PROPERTY == identify.getType() ? propertyId.equals(identify.getIdentify()) : false;
     }
 }

@@ -1,6 +1,6 @@
 package org.biot.rule.engine.infrastructure.tsdb;
 
-import org.biot.rule.engine.domain.rule.condition.point.TriggerPoint;
+import org.biot.rule.engine.domain.rule.model.condition.point.TriggerPoint;
 
 import java.util.List;
 

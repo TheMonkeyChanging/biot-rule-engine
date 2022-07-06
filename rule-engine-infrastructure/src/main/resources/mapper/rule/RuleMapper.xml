@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.biot.rule.engine.infrastructure.dal.mapper.rule.RuleMapper" >
+    <resultMap id="BaseResultMap" type="org.biot.rule.engine.infrastructure.dal.model.rule.RuleDo">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="tenant_id" property="tenantId" jdbcType="VARCHAR" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="description" property="desc" jdbcType="VARCHAR" />
+        <result column="enabled" property="enabled" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, tenant_id, uuid, name, description, enabled, gmt_create, gmt_modified
+    </sql>
+
+    <select id="selectAllRulesOfTenant" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rule
+        where tenant_id = #{tenantId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectEnabledRulesOfTenant" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rule
+        where tenant_id = #{tenantId,jdbcType=VARCHAR} and enabled = 'TRUE'
+    </select>
+</mapper>

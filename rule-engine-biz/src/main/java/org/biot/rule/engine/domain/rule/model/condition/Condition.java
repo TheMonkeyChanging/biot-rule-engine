@@ -1,7 +1,8 @@
-package org.biot.rule.engine.domain.rule.condition;
+package org.biot.rule.engine.domain.rule.model.condition;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.biot.rule.engine.domain.rule.RuleId;
 
 /**
@@ -12,6 +13,7 @@ import org.biot.rule.engine.domain.rule.RuleId;
  */
 @Getter
 @Setter
+@SuperBuilder
 public abstract class Condition {
     /**
      * 所属规则ID

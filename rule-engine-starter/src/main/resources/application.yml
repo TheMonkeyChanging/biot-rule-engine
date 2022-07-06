@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/rule-engine
     username: root
     password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -23,6 +23,15 @@ spring:
 #          enabled: true
 #          max-attempts: 5
 #          initial-interval: 2s
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    client-type: LETTUCE
+    lettuce:
+      pool:
+        max-active: 16
+        max-idle: 8
+        max-wait: 300ms
 
 mybatis:
   mapper-locations: classpath*:mapper/**/*Mapper.xml

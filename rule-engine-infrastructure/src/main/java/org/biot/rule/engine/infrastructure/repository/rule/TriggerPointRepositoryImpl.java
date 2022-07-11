@@ -25,6 +25,11 @@ public class TriggerPointRepositoryImpl implements TriggerPointRepository {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private void log() {
+        System.out.println("RedisTemplate: " + redisTemplate);
+    }
+
     /**
      * 保存出发点
      *

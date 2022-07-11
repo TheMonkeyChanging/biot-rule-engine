@@ -2,6 +2,8 @@ server:
   port: 8280
 
 spring:
+  application:
+    name: rule-engine
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/rule-engine
     username: root
@@ -32,6 +34,10 @@ spring:
         max-active: 16
         max-idle: 8
         max-wait: 300ms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
 mybatis:
   mapper-locations: classpath*:mapper/**/*Mapper.xml

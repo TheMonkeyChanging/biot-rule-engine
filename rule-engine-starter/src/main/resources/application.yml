@@ -5,18 +5,18 @@ spring:
   application:
     name: rule-engine
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/rule-engine
+    url: jdbc:mysql://10.23.103.132:3306/rule-engine
     username: root
-    password: 123456
+    password: Bb123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   rabbitmq:
-    host: 127.0.0.1
+    host: 10.23.103.132
     port: 5672
-    username: guest
-    password: guest
+    username: rabbit
+    password: 12345678
     virtual-host: iot
 #    listener:
 #      simple:
@@ -26,7 +26,7 @@ spring:
 #          max-attempts: 5
 #          initial-interval: 2s
   redis:
-    host: 127.0.0.1
+    host: 10.23.103.132
     port: 6379
     client-type: LETTUCE
     lettuce:
@@ -37,7 +37,15 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 10.23.103.132:8848
 
 mybatis:
   mapper-locations: classpath*:mapper/**/*Mapper.xml
+
+biot:
+  tsdb:
+    influx:
+      host: http://10.23.103.132:8086
+      token: TNPoc-yJwKzeTrL1yIWsQZQGKcH-g6ytu09nLVZezudfFnpI4PVW2IIqDlXp6Kjn0MPzaEgWHSbBUTRYe6546g==
+      org: abama
+      trigger_bucket: rule_trigger_trace

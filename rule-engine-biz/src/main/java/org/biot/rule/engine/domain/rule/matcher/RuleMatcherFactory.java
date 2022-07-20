@@ -36,6 +36,7 @@ public class RuleMatcherFactory {
                 matcher = ruleMap.get(tenantId);
                 if (matcher == null) {
                     matcher = create(tenantId);
+                    // todo put into map
                 }
             }
         }

@@ -9,6 +9,13 @@ import java.util.List;
 @Mapper
 public interface RuleMapper {
     /**
+     * 插入规则
+     *
+     * @param ruleDo
+     */
+    void insert(RuleDo ruleDo);
+
+    /**
      * 查询租户下的所有规则
      *
      * @param tenantId

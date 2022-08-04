@@ -16,6 +16,15 @@
         id, tenant_id, uuid, name, description, enabled, gmt_create, gmt_modified
     </sql>
 
+    <sql id="Normal_Insert_Columns">
+        tenant_id, uuid, name, description, enabled
+    </sql>
+
+    <insert id="insert" parameterType="org.biot.rule.engine.infrastructure.dal.model.rule.RuleDo" >
+        insert into rule (<include refid="Normal_Insert_Columns" />)
+        values (#{tenantId}, #{uuid}, #{name}, #{desc}, #{enabled})
+    </insert>
+
     <select id="selectAllRulesOfTenant" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />

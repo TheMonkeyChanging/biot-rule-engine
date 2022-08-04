@@ -1,0 +1,48 @@
+server:
+  port: 8280
+
+spring:
+  application:
+    name: rule-engine
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/rule-engine?serverTimezone=Asia/Shanghai
+    username: root
+    password: Bb123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: rabbit
+    password: 12345678
+    virtual-host: iot
+  #    listener:
+  #      simple:
+  #        acknowledge-mode: auto
+  #        retry:
+  #          enabled: true
+  #          max-attempts: 5
+  #          initial-interval: 2s
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    client-type: LETTUCE
+    lettuce:
+      pool:
+        max-active: 16
+        max-idle: 8
+        max-wait: 300ms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+biot:
+  tsdb:
+    influx:
+      host: http://127.0.0.1:8086
+      token: TNPoc-yJwKzeTrL1yIWsQZQGKcH-g6ytu09nLVZezudfFnpI4PVW2IIqDlXp6Kjn0MPzaEgWHSbBUTRYe6546g==
+      org: abama
+      trigger_bucket: rule_trigger_trace

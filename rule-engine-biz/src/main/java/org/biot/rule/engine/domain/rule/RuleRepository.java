@@ -4,6 +4,13 @@ import java.util.List;
 
 public interface RuleRepository {
     /**
+     * 创建规则
+     *
+     * @param rule
+     */
+    void create(Rule rule);
+
+    /**
      * 获取租户下的所有规则
      *
      * @param tenantId
